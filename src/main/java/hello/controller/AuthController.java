@@ -37,10 +37,10 @@ public class AuthController {
         User loggedInUser = userService.getUserByUserName(userName);
 
         if (loggedInUser == null) {
-            return new Result("Fail", "No Login", false);
+            return Result.failure("No Login");
         }
         else {
-            return new Result("OK", null, true, loggedInUser);
+            return Result.success("Logged in");
         }
     }
 
@@ -51,23 +51,23 @@ public class AuthController {
         String password = usernameAndPassword.get("password");
 
         if (username == null || password == null) {
-            return new Result("Fail", "Username and password are null", false);
+            return Result.failure("Username and password are null");
         }
         if (username.length() < 1 || username.length() > 15) {
-            return new Result("Fail", "Invalid username", false);
+            return Result.failure("Invalid username");
         }
         if (password.length() < 1 || password.length() > 16) {
-            return new Result("Fail", "Invalid password", false);
+            return Result.failure("Invalid password");
         }
 
         try {
             userService.register(username, password);
         }
         catch (DuplicateKeyException e) {
-            return new Result("Fail", "User already exists", false);
+            return Result.failure("User already exists");
         }
 
-        return new Result("OK", "Register successfully", true);
+        return Result.success("Register successfully");
     }
 
 
@@ -82,7 +82,7 @@ public class AuthController {
             userDetails = userService.loadUserByUsername(userName);
         }
         catch (UsernameNotFoundException e) {
-            return new Result("fail", "No such user", false);
+            return Result.failure("No such user");
         }
 
         // Get token
@@ -93,11 +93,10 @@ public class AuthController {
 
             SecurityContextHolder.getContext().setAuthentication(token);
 
-            return new Result("OK", "Login successfully", true, userService.getUserByUserName(userName));
+            return Result.success("Login successfully");
         }
         catch (BadCredentialsException e) {
-            e.printStackTrace();
-            return new Result("Not OK", "Incorrect password", false);
+            return Result.failure("Incorrect password");
         }
     }
 
@@ -109,12 +108,12 @@ public class AuthController {
         User loggedInUser = userService.getUserByUserName(userName);
 
         if (loggedInUser == null) {
-            return new Result("Fail", "No Login", false);
+            return Result.failure("No login");
         }
         else {
             SecurityContextHolder.clearContext();
 
-            return new Result("OK", "Logout successfully", true, loggedInUser);
+            return Result.success("Logout successfully");
         }
     }
 
@@ -123,6 +122,14 @@ public class AuthController {
         String msg;
         boolean isLogin;
         Object data;
+
+        public static Result failure(String message) {
+            return new Result("Fail", message, false);
+        }
+
+        public static Result success(String message) {
+            return new Result("Success", message, true);
+        }
 
         public Result(String status, String msg, boolean isLogin) {
             this.status = status;
