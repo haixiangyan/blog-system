@@ -2,6 +2,7 @@ package hello.controller;
 
 import hello.entity.User;
 import hello.service.UserService;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,7 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -60,14 +60,14 @@ public class AuthController {
             return new Result("Fail", "Invalid password", false);
         }
 
-        User user = userService.getUserByUserName(username);
-        if (user == null) {
+        try {
             userService.register(username, password);
-            return new Result("OK", "Register successfully", true);
         }
-        else {
+        catch (DuplicateKeyException e) {
             return new Result("Fail", "User already exists", false);
         }
+
+        return new Result("OK", "Register successfully", true);
     }
 
 
