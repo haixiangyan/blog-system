@@ -4,16 +4,16 @@ import java.time.Instant;
 
 public class User {
     public Integer id;
-    public String userName;
-    public String encodedPassword;
+    public String username;
+    public String encryptedPassword;
     public String avatar;
     public Instant createdAt;
     public Instant updatedAt;
 
-    public User(Integer id, String userName, String encodedPassword) {
+    public User(Integer id, String username, String encryptedPassword) {
         this.id = id;
-        this.userName = userName;
-        this.encodedPassword = encodedPassword;
+        this.username = username;
+        this.encryptedPassword = encryptedPassword;
         this.avatar = "";
         this.createdAt = Instant.now();
         this.updatedAt = Instant.now();
@@ -24,11 +24,11 @@ public class User {
     }
 
     public String getuserName() {
-        return userName;
+        return username;
     }
 
-    public String getEncodedPassword() {
-        return encodedPassword;
+    public String getEncryptedPassword() {
+        return encryptedPassword;
     }
 
     public String getAvatar() {
@@ -48,11 +48,11 @@ public class User {
     }
 
     public void setuserName(String userName) {
-        this.userName = userName;
+        this.username = userName;
     }
 
-    public void setEncodedPassword(String encodedPassword) {
-        this.encodedPassword = encodedPassword;
+    public void setEncryptedPassword(String encryptedPassword) {
+        this.encryptedPassword = encryptedPassword;
     }
 
     public void setAvatar(String avatar) {
