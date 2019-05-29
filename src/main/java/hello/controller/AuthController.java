@@ -44,6 +44,33 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/auth/register")
+    @ResponseBody
+    public Result register(@RequestBody Map<String, String> usernameAndPassword) {
+        String username = usernameAndPassword.get("username");
+        String password = usernameAndPassword.get("password");
+
+        if (username == null || password == null) {
+            return new Result("Fail", "Username and password are null", false);
+        }
+        if (username.length() < 1 || username.length() > 15) {
+            return new Result("Fail", "Invalid username", false);
+        }
+        if (password.length() < 1 || password.length() > 16) {
+            return new Result("Fail", "Invalid password", false);
+        }
+
+        User user = userService.getUserByUserName(username);
+        if (user == null) {
+            userService.register(username, password);
+            return new Result("OK", "Register successfully", true);
+        }
+        else {
+            return new Result("Fail", "User already exists", false);
+        }
+    }
+
+
     @PostMapping("/auth/login")
     @ResponseBody
     public Result login(@RequestBody Map<String, Object> request) {
@@ -71,6 +98,23 @@ public class AuthController {
         catch (BadCredentialsException e) {
             e.printStackTrace();
             return new Result("Not OK", "Incorrect password", false);
+        }
+    }
+
+    @GetMapping("/auth/logout")
+    @ResponseBody
+    public Object logout() {
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User loggedInUser = userService.getUserByUserName(userName);
+
+        if (loggedInUser == null) {
+            return new Result("Fail", "No Login", false);
+        }
+        else {
+            SecurityContextHolder.clearContext();
+
+            return new Result("OK", "Logout successfully", true, loggedInUser);
         }
     }
 
