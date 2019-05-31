@@ -42,7 +42,7 @@ public class AuthController {
             return Result.failure("No Login");
         }
         else {
-            return Result.success("Logged in");
+            return Result.success("Logged in", loggedInUser);
         }
     }
 
@@ -69,7 +69,7 @@ public class AuthController {
             return Result.failure("User already exists");
         }
 
-        return Result.success("Register successfully");
+        return Result.success("Register successfully", null);
     }
 
 
@@ -95,7 +95,7 @@ public class AuthController {
 
             SecurityContextHolder.getContext().setAuthentication(token);
 
-            return Result.success("Login successfully");
+            return Result.success("Login successfully",null);
         }
         catch (BadCredentialsException e) {
             return Result.failure("Incorrect password");
@@ -115,7 +115,7 @@ public class AuthController {
         else {
             SecurityContextHolder.clearContext();
 
-            return Result.success("Logout successfully");
+            return Result.success("Logout successfully", null);
         }
     }
 }

@@ -10,8 +10,8 @@ public class Result {
         return new Result("Fail", message, false);
     }
 
-    public static Result success(String message) {
-        return new Result("Success", message, true);
+    public static Result success(String message, User loggedInUser) {
+        return new Result("Success", message, true, loggedInUser);
     }
 
     public Result(String status, String msg, boolean isLogin) {
