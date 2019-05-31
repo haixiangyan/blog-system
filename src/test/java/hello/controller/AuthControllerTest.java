@@ -77,6 +77,6 @@ class AuthControllerTest {
         // 再次检查 /auth 登陆状态
         mvc.perform(get("/auth").session((MockHttpSession) session))
                 .andExpect(status().isOk())
-                .andExpect(mvcResult -> Assertions.assertTrue(response.getResponse().getContentAsString().contains("Login successfully")));
+                .andExpect(mvcResult -> Assertions.assertTrue(mvcResult.getResponse().getContentAsString().contains("MyUser")));
     }
 }
