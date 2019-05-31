@@ -109,6 +109,35 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <executions>
+                    <execution>
+                        <id>start-test-database</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <longModulepath>false</longModulepath>
+                    <executable>docker</executable>
+                    <arguments>
+                        <argument>run</argument>
+                        <argument>-e</argument>
+                        <argument>MYSQL_ROOT_PASSWORD=my-secret-pw</argument>
+                        <argument>-e</argument>
+                        <argument>MYSQL_DATABASE=xdml</argument>
+                        <argument>-p</argument>
+                        <argument>3307:3306</argument>
+                        <argument>-d</argument>
+                        <argument>mysql</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
