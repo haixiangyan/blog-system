@@ -120,23 +120,41 @@
                         <goals>
                             <goal>exec</goal>
                         </goals>
+                        <configuration>
+                            <longModulepath>false</longModulepath>
+                            <executable>docker</executable>
+                            <arguments>
+                                <argument>run</argument>
+                                <argument>--name</argument>
+                                <argument>test-mysql</argument>
+                                <argument>-e</argument>
+                                <argument>MYSQL_ROOT_PASSWORD=my-secret-pw</argument>
+                                <argument>-e</argument>
+                                <argument>MYSQL_DATABASE=xdml</argument>
+                                <argument>-p</argument>
+                                <argument>3307:3306</argument>
+                                <argument>-d</argument>
+                                <argument>mysql</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>teardown-test-database</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <longModulepath>false</longModulepath>
+                            <executable>docker</executable>
+                            <arguments>
+                                <argument>rm</argument>
+                                <argument>-f</argument>
+                                <argument>test-mysql</argument>
+                            </arguments>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <longModulepath>false</longModulepath>
-                    <executable>docker</executable>
-                    <arguments>
-                        <argument>run</argument>
-                        <argument>-e</argument>
-                        <argument>MYSQL_ROOT_PASSWORD=my-secret-pw</argument>
-                        <argument>-e</argument>
-                        <argument>MYSQL_DATABASE=xdml</argument>
-                        <argument>-p</argument>
-                        <argument>3307:3306</argument>
-                        <argument>-d</argument>
-                        <argument>mysql</argument>
-                    </arguments>
-                </configuration>
             </plugin>
         </plugins>
     </build>
