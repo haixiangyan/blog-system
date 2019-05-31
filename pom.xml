@@ -139,6 +139,20 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>wait-test-database</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <longModulepath>false</longModulepath>
+                            <executable>sleep</executable>
+                            <arguments>
+                                <argument>20</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>teardown-test-database</id>
                         <phase>post-integration-test</phase>
                         <goals>
