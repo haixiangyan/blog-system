@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.springframework</groupId>
@@ -94,22 +94,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-maven-plugin</artifactId>
-                <version>5.2.4</version>
-                <configuration>
-                    <url>jdbc:h2:file:./target/foobar</url>
-                    <user>sa</user>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.h2database</groupId>
-                        <artifactId>h2</artifactId>
-                        <version>1.4.197</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.6.0</version>
@@ -140,7 +124,7 @@
                     </execution>
                     <execution>
                         <id>wait-test-database</id>
-                        <phase>post-integration-test</phase>
+                        <phase>pre-integration-test</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
@@ -166,6 +150,30 @@
                                 <argument>-f</argument>
                                 <argument>test-mysql</argument>
                             </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>5.2.4</version>
+                <configuration>
+                    <url>jdbc:mysql://localhost:3306/xdml?useSSL=false&amp;allowPublicKeyRetrieval=true</url>
+                    <user>root</user>
+                    <password>my-secret-pw</password>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>test-database-setup</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>migrate</goal>
+                        </goals>
+                        <configuration>
+                            <url>jdbc:mysql://localhost:3307/xdml?useSSL=false&amp;allowPublicKeyRetrieval=true</url>
+                            <user>root</user>
+                            <password>my-secret-pw</password>
                         </configuration>
                     </execution>
                 </executions>
