@@ -1,6 +1,6 @@
 package hello.controller;
 
-import hello.entity.Result;
+import hello.entity.LoginResult;
 import hello.entity.User;
 import hello.service.UserService;
 import org.springframework.dao.DuplicateKeyException;
@@ -39,43 +39,43 @@ public class AuthController {
         User loggedInUser = userService.getUserByUserName(authentication == null ? null : authentication.getName());
 
         if (loggedInUser == null) {
-            return Result.failure("No Login");
+            return LoginResult.failure("No Login");
         }
         else {
-            return Result.success("Logged in", loggedInUser);
+            return LoginResult.success("Logged in", loggedInUser);
         }
     }
 
     @PostMapping("/auth/register")
     @ResponseBody
-    public Result register(@RequestBody Map<String, String> usernameAndPassword) {
+    public LoginResult register(@RequestBody Map<String, String> usernameAndPassword) {
         String username = usernameAndPassword.get("username");
         String password = usernameAndPassword.get("password");
 
         if (username == null || password == null) {
-            return Result.failure("Username and password are null");
+            return LoginResult.failure("Username and password are null");
         }
         if (username.length() < 1 || username.length() > 15) {
-            return Result.failure("Invalid username");
+            return LoginResult.failure("Invalid username");
         }
         if (password.length() < 1 || password.length() > 16) {
-            return Result.failure("Invalid password");
+            return LoginResult.failure("Invalid password");
         }
 
         try {
             userService.register(username, password);
         }
         catch (DuplicateKeyException e) {
-            return Result.failure("User already exists");
+            return LoginResult.failure("User already exists");
         }
 
-        return Result.success("Register successfully", null);
+        return LoginResult.success("Register successfully", null);
     }
 
 
     @PostMapping("/auth/login")
     @ResponseBody
-    public Result login(@RequestBody Map<String, Object> request) {
+    public LoginResult login(@RequestBody Map<String, Object> request) {
         String userName = request.get("username").toString();
         String password = request.get("password").toString();
 
@@ -84,7 +84,7 @@ public class AuthController {
             userDetails = userService.loadUserByUsername(userName);
         }
         catch (UsernameNotFoundException e) {
-            return Result.failure("No such user");
+            return LoginResult.failure("No such user");
         }
 
         // Get token
@@ -95,10 +95,10 @@ public class AuthController {
 
             SecurityContextHolder.getContext().setAuthentication(token);
 
-            return Result.success("Login successfully",null);
+            return LoginResult.success("Login successfully",null);
         }
         catch (BadCredentialsException e) {
-            return Result.failure("Incorrect password");
+            return LoginResult.failure("Incorrect password");
         }
     }
 
@@ -110,12 +110,12 @@ public class AuthController {
         User loggedInUser = userService.getUserByUserName(userName);
 
         if (loggedInUser == null) {
-            return Result.failure("No login");
+            return LoginResult.failure("No login");
         }
         else {
             SecurityContextHolder.clearContext();
 
-            return Result.success("Logout successfully", null);
+            return LoginResult.success("Logout successfully", null);
         }
     }
 }
