@@ -112,7 +112,7 @@
                                 <argument>--name</argument>
                                 <argument>test-mysql</argument>
                                 <argument>-e</argument>
-                                <argument>MYSQL_ROOT_PASSWORD=my-secret-pw</argument>
+                                <argument>MYSQL_ROOT_PASSWORD=123456</argument>
                                 <argument>-e</argument>
                                 <argument>MYSQL_DATABASE=xdml</argument>
                                 <argument>-p</argument>
@@ -161,7 +161,7 @@
                 <configuration>
                     <url>jdbc:mysql://localhost:3306/xdml?useSSL=false&amp;allowPublicKeyRetrieval=true</url>
                     <user>root</user>
-                    <password>my-secret-pw</password>
+                    <password>123456</password>
                 </configuration>
                 <executions>
                     <execution>
@@ -173,7 +173,7 @@
                         <configuration>
                             <url>jdbc:mysql://localhost:3307/xdml?useSSL=false&amp;allowPublicKeyRetrieval=true</url>
                             <user>root</user>
-                            <password>my-secret-pw</password>
+                            <password>123456</password>
                         </configuration>
                     </execution>
                 </executions>

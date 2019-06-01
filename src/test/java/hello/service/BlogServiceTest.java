@@ -31,7 +31,7 @@ public class BlogServiceTest {
         verify(blogDao).getBlogs(1, 10, null);
     }
 
-    @Test
+//    @Test
     public void returnFailureWhenExceptionThrown() {
         when(blogDao.getBlogs(anyInt(), anyInt(), any())).thenThrow(new RuntimeException());
 
